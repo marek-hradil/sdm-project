@@ -1,7 +1,11 @@
 import os
 import json
+import csv
 
 with open('./csv/publishers.csv', 'w', encoding="utf-8") as output_nodes, open('./csv/publishers_papers.csv', 'w', encoding="utf-8") as output_relationships:
+    nodes_writer = csv.writer(output_nodes)
+    relationships_writer = csv.writer(output_relationships)
+
     for file in os.listdir('./json/papers'):
         with open(f'./json/papers/{file}', 'r', encoding="utf-8") as input:
             data = json.load(input)
@@ -20,10 +24,14 @@ with open('./csv/publishers.csv', 'w', encoding="utf-8") as output_nodes, open('
                 if not publisher_id or not paper_id or not date:
                     continue
 
-                output_nodes.write(
-                    f"{publisher_id},{name},{publisher_type}\n"
-                )
+                nodes_writer.writerow([
+                    publisher_id,
+                    name,
+                    publisher_type
+                ])
 
-                output_relationships.write(
-                    f"{publisher_id},{paper_id},{date}\n"
-                )
+                relationships_writer.writerow([
+                    publisher_id,
+                    paper_id,
+                    date
+                ])

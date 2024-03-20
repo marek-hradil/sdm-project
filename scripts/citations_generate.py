@@ -1,7 +1,10 @@
 import os
+import csv
 import json
 
 with open('./csv/citations.csv', 'w', encoding="utf-8") as output:
+    writer = csv.writer(output)
+
     for file in os.listdir('./json/citations'):
         with open(f'./json/citations/{file}', 'r', encoding="utf-8") as input:
             data = json.load(input)
@@ -11,11 +14,7 @@ with open('./csv/citations.csv', 'w', encoding="utf-8") as output:
                     if not citation['paperId']:
                         continue
 
-                    row = [
+                    writer.writerow([
                         paper['paperId'],
                         citation['paperId']
-                    ]
-
-                    output.write(
-                        ','.join(row) + '\n'
-                    )
+                    ])

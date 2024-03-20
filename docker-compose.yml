@@ -2,7 +2,9 @@ version: '3'
 
 services:
   neo4j:
-    image: neo4j:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: my_neo4j
     ports:
       - "7474:7474"
