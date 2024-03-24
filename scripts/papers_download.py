@@ -38,6 +38,5 @@ def download(year: int, token: Optional[str] = None):
         print('Continuing in the same year')
         download(year, token=data['token'])
 
-
 for year in YEARS_TO_FETCH:
     download(year)
