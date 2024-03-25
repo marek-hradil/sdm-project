@@ -62,10 +62,14 @@ We are using `https://www.semanticscholar.org/`.
 - python (ideally v.12)
 - some python package installer (conda, pip, ...)
 
-### Instructions
+### First startup
 
 - Download required python packages (should be yake, thefuzz and maybe requests if not already included in base libraries)
 - Create empty `json` and `csv` folders
 - Running `./download_all.sh` should be enough (if not runnable, go for `chmod +x ./download_all.sh`)
 - After database starts, interface should be available at `localhost:7474`
 - There, run the `./queries/import.cypher` script
+
+### Next startups
+
+- Running `docker compose up` should be enough
