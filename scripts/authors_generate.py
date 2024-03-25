@@ -3,8 +3,9 @@ import csv
 import json
 
 with open('./csv/authors.csv', 'w', encoding="utf-8") as output_nodes, open('./csv/authors_papers.csv', 'w', encoding="utf-8") as output_relationships:
-    nodes_writer = csv.writer(output_nodes)
-    relationships_writer = csv.writer(output_relationships)
+    nodes_writer = csv.writer(output_nodes, quoting=csv.QUOTE_STRINGS)
+    relationships_writer = csv.writer(
+        output_relationships, quoting=csv.QUOTE_STRINGS)
 
     for file in os.listdir('./json/papers'):
         with open(f'./json/papers/{file}', 'r', encoding="utf-8") as input:

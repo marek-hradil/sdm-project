@@ -3,18 +3,13 @@ import csv
 import json
 
 with open('./csv/citations.csv', 'w', encoding="utf-8") as output:
-    writer = csv.writer(output)
+    writer = csv.writer(output, quoting=csv.QUOTE_STRINGS)
 
     for file in os.listdir('./json/citations'):
         with open(f'./json/citations/{file}', 'r', encoding="utf-8") as input:
             data = json.load(input)
-
-            for paper in data:
-                for citation in paper['citations']:
-                    if not citation['paperId']:
-                        continue
-
-                    writer.writerow([
-                        paper['paperId'],
-                        citation['paperId']
-                    ])
+            for citation in data:
+                writer.writerow([
+                    citation[0],
+                    citation[1]
+                ])

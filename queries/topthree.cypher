@@ -1,7 +1,7 @@
-#Find the top 3 most cited papers of each conference
+// Find the top 3 most cited papers of each conference
 
-MATCH (n: Publication {publisher_type: 'conference'})
-WITH n ORDER BY n.citationCount desc
-WITH n.publicationVenue as conference, collect(n.title) as paper
-return conference, paper[0..3]
-order by conference
+MATCH (publisher:Publisher { type: 'conference' })-[:PUBLISHED]->(publication:Publication)<-[:CITED]-(citingPublication:Publication)
+WITH publisher, publication, count(citingPublication) AS citationCount
+ ORDER BY citationCount DESC
+WITH COLLECT(publication) AS publications, publisher
+RETURN publisher, publications[0..3]
