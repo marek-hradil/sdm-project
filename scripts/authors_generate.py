@@ -14,9 +14,10 @@ with open('./csv/authors.csv', 'w', encoding="utf-8") as output_nodes, open('./c
             for paper in data:
                 authors = paper['authors'] or []
 
-                for author in authors:
+                for index, author in enumerate(authors):
                     author_id = author['authorId']
                     name = author['name']
+                    main_author = index == 0
 
                     if not author_id or not name:
                         continue
@@ -28,5 +29,6 @@ with open('./csv/authors.csv', 'w', encoding="utf-8") as output_nodes, open('./c
 
                     relationships_writer.writerow([
                         author_id,
-                        paper['paperId']
+                        paper['paperId'],
+                        main_author,
                     ])
