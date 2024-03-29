@@ -50,6 +50,9 @@ e.type AS type,
 e.date AS date
 LIMIT 5
 
+CREATE CONSTRAINT EditionId IF NOT EXISTS
+FOR (e:Edition) REQUIRE e.id IS UNIQUE
+
 LOAD CSV FROM "file:///citations.csv" AS row
 MATCH (source:Publication { id: row[0] })
 MATCH (target:Publication { id: row[1] })
