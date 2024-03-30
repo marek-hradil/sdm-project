@@ -1,7 +1,16 @@
 import csv
 import os
 import json
+from faker import Faker
 from random import randint
+
+
+fake = Faker()
+
+
+def remove_lineends(s):
+    return (s or '').replace('\n', ' ').replace('\r', ' ')
+
 
 with open('./csv/reviewers_papers.csv', 'w', encoding="utf-8") as reviewers_papers_output:
     reviewers_papers_writer = csv.writer(
@@ -39,7 +48,10 @@ with open('./csv/reviewers_papers.csv', 'w', encoding="utf-8") as reviewers_pape
                         reviewers.append(reviewer)
 
                 for reviewer in reviewers:
+                    decision = "Rejected" if randint(0, 9) == 0 else "Accepted"
                     reviewers_papers_writer.writerow([
                         reviewer['authorId'],
-                        paper['paperId']
+                        paper['paperId'],
+                        remove_lineends(fake.sentence()),
+                        decision
                     ])

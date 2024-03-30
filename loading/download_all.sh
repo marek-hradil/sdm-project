@@ -1,14 +1,15 @@
 echo "--- Starting the download of data 🚀 ..."
 
-python ./scripts/papers_download.py
+python ./loading/papers_download.py
 
 echo "--- Download finished, continuing to parsing to csv 📦 ..."
 
-python ./scripts/papers_generate.py
-python ./scripts/authors_generate.py
-python ./scripts/citations_generate.py
-python ./scripts/keywords_generate.py
-python ./scripts/publishers_generate.py
+python ./loading/papers_generate.py
+python ./loading/authors_generate.py
+python ./loading/citations_generate.py
+python ./loading/keywords_generate.py
+python ./loading/publishers_generate.py
+python ./loading/reviewers_generate.py
 
 echo "--- Parsing finished, now making files unique 🧹 ..."
 
