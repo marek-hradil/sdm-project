@@ -19,7 +19,7 @@ with open('./csv/authors.csv', 'w', encoding="utf-8") as authors_output, \
     affiliations_authors_writer = csv.writer(
         affiliations_authors_output, quoting=csv.QUOTE_STRINGS)
 
-    authors = []
+    authors = dict()
 
     for file in os.listdir('./json/papers'):
         with open(f'./json/papers/{file}', 'r', encoding="utf-8") as input:
@@ -34,16 +34,14 @@ with open('./csv/authors.csv', 'w', encoding="utf-8") as authors_output, \
                     if not author_id or not name:
                         continue
 
-                    authors_papers_writer.writerow([
-                        author_id,
-                        paper['paperId'],
-                    ])
-
-                    authors.append({
+                    current_author = authors.get(author_id, {
                         'id': author_id,
                         'name': name,
-                        'main': main_author,
+                        'paper_ids': [],
                     })
+                    current_author['paper_ids'].append(
+                        (paper['paperId'], main_author))
+                    authors[author_id] = current_author
 
     affiliations = []
     for _ in range(len(authors)):
@@ -57,7 +55,7 @@ with open('./csv/authors.csv', 'w', encoding="utf-8") as authors_output, \
         })
 
     authors_affiliations = dict()
-    for author in authors:
+    for author in authors.values():
         authors_affiliations[author['id']
                              ] = affiliations[randint(0, len(affiliations) - 1)]
 
@@ -68,14 +66,20 @@ with open('./csv/authors.csv', 'w', encoding="utf-8") as authors_output, \
             affiliation['type'],
         ])
 
-    for author in authors:
+    for author in authors.values():
         authors_writer.writerow([
             author['id'],
             author['name'],
-            author['main'],
         ])
 
         affiliations_authors_writer.writerow([
             authors_affiliations[author['id']]['id'],
             author['id'],
         ])
+
+        for paper_id, main_author in author['paper_ids']:
+            authors_papers_writer.writerow([
+                author['id'],
+                paper_id,
+                'Main' if main_author else 'Coauthor',
+            ])

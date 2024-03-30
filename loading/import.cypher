@@ -36,7 +36,7 @@ MERGE (source)-[:CITED]->(target);
 LOAD CSV FROM "file:///authors_papers.csv" AS row
 MATCH (a:Author { id: row[0] })
 MATCH (p:Publication { id: row[1] })
-MERGE (a)-[:AUTHORED { main: toBoolean(row[2]) }]->(p);
+MERGE (a)-[:AUTHORED { type: row[2] }]->(p);
 
 LOAD CSV FROM "file:///keywords_papers.csv" AS row
 MATCH (k:Keyword { id: row[0] })

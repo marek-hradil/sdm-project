@@ -20,6 +20,7 @@ chmod +x ./uniq.sh
 ./uniq.sh keywords
 ./uniq.sh publishers
 ./uniq.sh papers
+./uniq.sh affiliations
 
 echo "--- Making files unique finished, now spinning up the db 🛢️"
 
