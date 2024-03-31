@@ -5,6 +5,12 @@
 3. Leave the database name empty, username is `neo4j`, password is `password`
 4. Connect
 
+## How to clear the database
+
+1. Go to the main folder and stop the running databse
+2. Run `sudo rm -rf ./data ./logs` and fill in the password
+3. Run `docker-compose up --build` again
+
 ## Data
 
 We are using `https://www.semanticscholar.org/`.
