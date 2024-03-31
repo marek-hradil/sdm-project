@@ -6,6 +6,4 @@ MATCH (p:Publication { id: gds.util.asNode(nodeId).id })
 MERGE (p)-[:BELONGS_TO]->(c)
 RETURN c, p;
 
-//
-MATCH (c:Community)
-DETACH DELETE c;
+// MATCH (c:Community) DETACH DELETE c;

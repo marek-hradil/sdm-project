@@ -1,9 +1,6 @@
-// publications graph needed, if throwing error run the other file
-
 CALL gds.scc.stream('publications')
 YIELD nodeId, componentId
-WITH *
-WHERE nodeId <> componentId
-WITH nodeId, componentId
-MATCH (p:Publication { id: gds.util.asNode(nodeId).id })
+WITH componentId, count(*) AS componentSize, collect(gds.util.asNode(nodeId)) AS publications
+WHERE componentSize > 1
+UNWIND publications AS p
 RETURN p;
