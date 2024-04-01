@@ -3,16 +3,25 @@
 //Assume that if 90% of the papers published in a conference/journal contain one of the keywords of the database community we
 //consider that conference/journal as related to that community.
 
-
-//Define the keywords representing the research community
+//Find the publications tagged with specified keywords
 MATCH (k:Keyword)
 WHERE k.name IN ['data management', 'indexing', 'data modeling', 'big data', 'data processing', 'data storage', 'data querying']
+MATCH (k)<-[:TAGGED]-(pub:Publication)
 
-// For each keyword, find publications associated with it
-MATCH (k)-[:TAGGED]->(p:Publication)
+// Find publications for publishers
+MATCH (p:Publisher)-[:ORGANIZED]->(edition:Edition)-[:PRESENTED]->(pub)
 
-// Collect the publications for each keyword
-WITH k, COLLECT(p) AS publications
+// Count the number of publications for each publisher
+WITH p AS Publisher, COUNT(pub) AS TotalPublications, COLLECT(pub) AS AllPublications
 
-// Return the keyword along with its associated publications
-RETURN k AS Keyword, publications AS Publications
+// Count the number of publications tagged with specified keywords for each //publisher
+MATCH (p)-[:ORGANIZED]->(edition:Edition)-[:PRESENTED]->(pub)-[:TAGGED]->(k:Keyword)
+WHERE k.name IN ['data management', 'indexing', 'data modeling', 'big data', 'data processing', 'data storage', 'data querying']
+WITH Publisher, TotalPublications, COUNT(pub) AS TaggedPublications, AllPublications
+
+// Check if at least 90% of tagged publications are included in all publications
+WITH Publisher, TotalPublications, TaggedPublications, AllPublications,
+     TaggedPublications * 1.0 / TotalPublications AS TaggedRatio
+WHERE TaggedRatio >= 0.9
+
+RETURN Publisher
