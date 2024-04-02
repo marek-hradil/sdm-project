@@ -1,5 +1,4 @@
 
-
 // Find publications for publishers
 MATCH (p:Publisher)-[:ORGANIZED]->(edition:Edition)-[:PRESENTED]->(pub)
 
