@@ -10,3 +10,4 @@ WITH b, COUNT(DISTINCT CASE WHEN a.year = 2022 THEN a END) AS publications_2022,
             COUNT(cited) AS citations_2024
 RETURN b AS Publisher, 
        (citations_2024 * 1.0) / (publications_2022 + publications_2023) AS ImpactFactor
+ORDER BY ImpactFactor DESC

@@ -9,3 +9,4 @@ WITH a, REDUCE(s = 0, count IN RANGE(1, SIZE(citationCounts)) |
 
 CASE WHEN citationCounts[count - 1] >= count THEN count ELSE s END) AS hIndex
 RETURN a.name AS AuthorName, hIndex
+ORDER BY hIndex DESC
