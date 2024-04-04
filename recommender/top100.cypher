@@ -5,7 +5,7 @@ MATCH (p:Publisher)-[:ORGANIZED]->(edition:Edition)-[:PRESENTED]->(pub)
 WITH p AS Publisher, COUNT(pub) AS TotalPublications, COLLECT(pub) AS AllPublications
 
 // Count the number of publications tagged with specified keywords for each 
-MATCH (p)-[:ORGANIZED]->(edition:Edition)-[:PRESENTED]->(pub)-[:TAGGED]->(k:Keyword)
+MATCH (p)-[:ORGANIZED]->(edition:Edition)-[:PRESENTED]->(pub)<-[:TAGGED]-(k:Keyword)
 WHERE k.name IN ['data management', 'indexing', 'data modeling', 'big data', 'data processing', 'data storage', 'data querying']
 WITH Publisher, TotalPublications, COUNT(pub) AS TaggedPublications, AllPublications
 
