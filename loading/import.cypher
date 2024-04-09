@@ -1,5 +1,5 @@
 LOAD CSV FROM "file:///papers.csv" AS row
-MERGE (p:Publication { id: row[0], title: row[1], abstract: row[2], year: toInteger(row[3]), citationCount: toInteger(row[4]) });
+MERGE (p:Publication { id: row[0], title: row[1], abstract: row[2], year: toInteger(row[3]) });
 
 CREATE CONSTRAINT PublicationId IF NOT EXISTS
 FOR (p:Publication) REQUIRE p.id IS UNIQUE;
