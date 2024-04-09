@@ -5,4 +5,4 @@ MATCH (publisher:Publisher { type: "conference" })-[:ORGANIZED]->(edition:Editio
 WITH publisher, publication, count(citingPublication) AS citationCount
  ORDER BY citationCount DESC
 WITH COLLECT(publication) AS publications, publisher
-RETURN publisher AS Conference, publications[0..3] AS Top3papers
+RETURN publisher AS conference, publications[0..3] AS publications

@@ -39,7 +39,7 @@ def flatten(data):
     return [item for sublist in data for item in sublist]
 
 
-def save_papers(papers: List[dict]):
+def write_papers(papers: List[dict]):
     with open(f'./json/papers/{uuid4()}.json', 'w', encoding="utf-8") as output:
         json.dump(papers, output)
 
@@ -47,7 +47,7 @@ def save_papers(papers: List[dict]):
     papers.clear()
 
 
-def save_citations(citations: List[tuple]):
+def write_citations(citations: List[tuple]):
     with open(f'./json/citations/{uuid4()}.json', 'w', encoding="utf-8") as output:
         json.dump(citations, output)
 
@@ -74,13 +74,13 @@ def traverse(ids: List[str], depth: int, downloaded_papers: List[dict], download
         downloaded_citations.extend(citations)
 
     if len(downloaded_papers) > FILE_ENTITIES_LIMIT:
-        save_papers(downloaded_papers)
+        write_papers(downloaded_papers)
     else:
         print(f'[{datetime.now()}] Capacity of papers: {
               len(downloaded_papers)}/{FILE_ENTITIES_LIMIT}')
 
     if len(downloaded_citations) > FILE_ENTITIES_LIMIT:
-        save_citations(downloaded_citations)
+        write_citations(downloaded_citations)
     else:
         print(f'[{datetime.now()}] Capacity of citations: {
               len(downloaded_citations)}/{FILE_ENTITIES_LIMIT}')
@@ -92,17 +92,18 @@ def traverse(ids: List[str], depth: int, downloaded_papers: List[dict], download
                  for citation in paper['citations']], depth=depth + 1, downloaded_papers=downloaded_papers, downloaded_citations=downloaded_citations, parent_id=paper['paperId'])
 
 
-downloaded_papers = []
-downloaded_citations = []
+def run_stage():
+    downloaded_papers = []
+    downloaded_citations = []
 
-# Robust and Adaptive Control - Most cited 2024
-ROOT_ID = '78d4d60c50b23182f38df267d595a3b467db1250'
+    # Robust and Adaptive Control - Most cited 2024
+    ROOT_ID = '78d4d60c50b23182f38df267d595a3b467db1250'
 
-traverse([ROOT_ID], depth=0, downloaded_papers=downloaded_papers,
-         downloaded_citations=downloaded_citations)
+    traverse([ROOT_ID], depth=0, downloaded_papers=downloaded_papers,
+             downloaded_citations=downloaded_citations)
 
-if len(downloaded_papers) > 0:
-    save_papers(downloaded_papers)
+    if len(downloaded_papers) > 0:
+        write_papers(downloaded_papers)
 
-if len(downloaded_citations) > 0:
-    save_citations(downloaded_citations)
+    if len(downloaded_citations) > 0:
+        write_citations(downloaded_citations)

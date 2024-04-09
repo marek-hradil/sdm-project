@@ -1,9 +1,7 @@
 CALL gds.louvain.stream('publications') YIELD nodeId, communityId
 WITH communityId, nodeId
-MERGE (c:Community { id: communityId })
-WITH c, nodeId
-MATCH (p:Publication { id: gds.util.asNode(nodeId).id })
-MERGE (p)-[:BELONGS_TO]->(c)
-RETURN c, p;
-
-// MATCH (c:Community) DETACH DELETE c;
+MERGE (community:Community { id: communityId })
+WITH community, nodeId
+MATCH (publication:Publication { id: gds.util.asNode(nodeId).id })
+MERGE (publication)-[:BELONGS_TO]->(community)
+RETURN community, COLLECT(publication) AS publications;

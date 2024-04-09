@@ -8,6 +8,6 @@ WHERE cited.year = 2024
 WITH b, COUNT(DISTINCT CASE WHEN a.year = 2022 THEN a END) AS publications_2022,
             COUNT(DISTINCT CASE WHEN a.year = 2023 THEN a END) AS publications_2023,
             COUNT(cited) AS citations_2024
-RETURN b AS Publisher, 
-       (citations_2024 * 1.0) / (publications_2022 + publications_2023) AS ImpactFactor
-ORDER BY ImpactFactor DESC
+RETURN b AS publisher, 
+       (citations_2024 * 1.0) / (publications_2022 + publications_2023) AS impactFactor
+ORDER BY impactFactor DESC
