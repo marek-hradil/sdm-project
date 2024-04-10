@@ -29,16 +29,33 @@ def append_keywords(all_keywords: Dict[str, List[str]], new_keyword: str, paper:
     if len(merged_with) == 0:
         all_keywords[new_keyword] = [paper['paperId']]
 
-def replace_top_7_keywords(all_keywords: Dict[str, List[str]]):
-    top_keywords = sorted(all_keywords, reverse=True)[:7]
 
-    all_keywords[top_keywords[0]] = 'data management'
-    all_keywords[top_keywords[1]] = 'indexing'
-    all_keywords[top_keywords[2]] = 'data modeling'
-    all_keywords[top_keywords[3]] = 'big data'
-    all_keywords[top_keywords[4]] = 'data processing'
-    all_keywords[top_keywords[5]] = 'data storage'
-    all_keywords[top_keywords[6]] = 'data querying'
+def replace_top_7_keywords(all_keywords: Dict[str, List[str]]):
+    top_keywords = sorted(all_keywords, reverse=True,
+                          key=lambda x: len(all_keywords[x]))[:7]
+    existing_keywords = list(all_keywords.keys())
+
+    if 'data management' not in existing_keywords:
+        all_keywords['data management'] = all_keywords[top_keywords[0]]
+
+    if 'indexing' not in existing_keywords:
+        all_keywords['indexing'] = all_keywords[top_keywords[1]]
+
+    if 'data modeling' not in existing_keywords:
+        all_keywords['data modeling'] = all_keywords[top_keywords[2]]
+
+    if 'data processing' not in existing_keywords:
+        all_keywords['data processing'] = all_keywords[top_keywords[3]]
+
+    if 'data storage' not in existing_keywords:
+        all_keywords['data storage'] = all_keywords[top_keywords[4]]
+
+    if 'data querying' not in existing_keywords:
+        all_keywords['data querying'] = all_keywords[top_keywords[5]]
+
+    if 'big data' not in existing_keywords:
+        all_keywords['big data'] = all_keywords[top_keywords[6]]
+
 
 def write_keyword(keyword, paper_ids, relationship_writer, nodes_writer):
     keyword_id = str(uuid.uuid4())
@@ -85,3 +102,7 @@ def run_stage():
         for (keyword, paper_ids) in all_keywords.items():
             write_keyword(keyword, paper_ids,
                           keywords_relationships_writer, keywords_nodes_writer)
+
+
+if __name__ == '__main__':
+    run_stage()

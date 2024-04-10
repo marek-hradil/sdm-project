@@ -2,7 +2,7 @@
 //defined by a set of keywords. Assume that the database community is defined through
 //the following keywords: data management, indexing, data modeling, big data, data
 //processing, data storage and data querying
-MATCH (k:Keyword)
-WHERE k.name IN ['data management', 'indexing', 'data modeling', 'big data', 'data processing', 'data storage', 'data querying']
-RETURN k
+MATCH (keyword:Keyword)
+WHERE keyword.name IN ['data management', 'indexing', 'data modeling', 'big data', 'data processing', 'data storage', 'data querying']
+RETURN keyword
 

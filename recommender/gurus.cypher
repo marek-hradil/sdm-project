@@ -6,28 +6,27 @@
 // Find publications for publishers
 MATCH (p:Publisher)-[:ORGANIZED]->(edition:Edition)-[:PRESENTED]->(pub)
 
-WITH p AS Publisher, COUNT(pub) AS TotalPublications, COLLECT(pub) AS AllPublications
+WITH p AS publisher, COUNT(pub) AS totalPublications, COLLECT(pub) AS allPublications
 
-// Count the number of publications tagged with specified keywords for each 
+// Count the number of publications tagged with specified keywords for each
 MATCH (p)-[:ORGANIZED]->(edition:Edition)-[:PRESENTED]->(pub)<-[:TAGGED]-(k:Keyword)
 WHERE k.name IN ['data management', 'indexing', 'data modeling', 'big data', 'data processing', 'data storage', 'data querying']
-WITH Publisher, TotalPublications, COUNT(pub) AS TaggedPublications, AllPublications
+WITH publisher, totalPublications, COUNT(pub) AS taggedPublications, allPublications
 
-
-WITH Publisher, TotalPublications, TaggedPublications, AllPublications,
-     TaggedPublications * 1.0 / TotalPublications AS TaggedRatio
-WHERE TaggedRatio >= 0.9
+WITH publisher, totalPublications, taggedPublications, allPublications,
+taggedPublications * 1.0 / totalPublications AS taggedRatio
+WHERE taggedRatio >= 0.9
 
 // Return the top 100 most cited papers among all publications associated with the selected publishers
-UNWIND  AllPublications AS paper
+UNWIND allPublications AS paper
 WITH DISTINCT paper
 MATCH (paper)<-[c:CITED]-()
 WITH paper, COUNT(c) AS numCitations
-ORDER BY numCitations DESC
+ ORDER BY numCitations DESC
 LIMIT 100
 
 MATCH (author:Author)-[:AUTHORED]->(paper)
-WITH author, COLLECT(DISTINCT paper) AS authoredPapers
+WITH author, COLLECT( DISTINCT paper) AS authoredPapers
 WHERE SIZE(authoredPapers) >= 2
 
-RETURN author AS Guru, authoredPapers AS TopPapers
+RETURN author AS guru, authoredPapers AS topPapers
