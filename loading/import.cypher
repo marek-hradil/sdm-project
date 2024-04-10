@@ -57,3 +57,6 @@ LOAD CSV FROM "file:///reviewers_papers.csv" AS row
 MATCH (a:Author { id: row[0] })
 MATCH (p:Publication { id: row[1] })
 MERGE (a)-[:REVIEWED]->(p);
+
+CREATE INDEX publication_year_index FOR (p:Publication) ON (p.year);
+CREATE INDEX keyword_name_index FOR (k:Keyword) ON (k.name);
